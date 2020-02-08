@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue中使用animate.css库</title>
+    <!-- 引入animate.css -->
+    <link rel="stylesheet" href="animate.css">
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <button @click="handleClick">切换</button>
+        <!-- animated + 动画效果名称 -->
+        <transition enter-active-class="animated swing"
+                    leave-active-class="animated shake"
+                    appear-active-class="animated wobble"
+                    appear>
+        <!-- 可以通过 appear attribute 设置节点在初始渲染的过渡(刷新就显示动画)-->
+            <div v-if="show">hello world</div>
+        </transition>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#root',
+            data: {
+                show: true
+            },
+            methods: {
+                handleClick() {
+                    this.show = !this.show
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

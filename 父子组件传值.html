@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>父子组件传值</title>
+    <script src="vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <counter :count="3" @inc="handleIncrease"></counter>
+        <counter :count="2" @inc="handleIncrease"></counter>
+        <div>{{total}}</div>
+    </div>
+    <script>
+        var counter = {
+            props: ['count'],
+            data() { // 父传子用props
+                return {
+                    number: this.count // 注意单项数据流，子组件不能更改props，这里return一个独立的拷贝来使用
+                }
+            },
+            template: '<div @click="handleClick">{{number}}</div>',
+            methods: {
+                handleClick() {
+                    this.number = this.number + 2
+                    this.$emit('inc', 2) // 子传父用$emit
+                }
+            }
+        }
+        var vm = new Vue({
+            el: '#root',
+            data: {
+                total: 5
+            },
+            components: {
+                counter: counter
+            },
+            methods: {
+                handleIncrease(step) {
+                    this.total += step
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

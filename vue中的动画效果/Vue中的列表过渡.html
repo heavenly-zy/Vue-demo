@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue中的列表过渡</title>
+    <script src="../vue.js"></script>
+    <style>
+        .v-enter,
+        .v-leave-to {
+            opacity: 0;
+        }
+
+        .v-enter-active,
+        .v-leave-active {
+            transition: opacity 1.5s;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <transition-group>
+            <div v-for="item of list" :key="item.id">
+                {{item.title}}
+            </div>
+        </transition-group>
+        <button @click="addItem">Add</button>
+        <button @click="removeItem">Remove</button>
+    </div>
+    <script>
+        var count = 0
+
+        var vm = new Vue({
+            el: '#root',
+            data: {
+                list: []
+            },
+            methods: {
+                addItem() {
+                    this.list.push({
+                        id: count++,
+                        title: 'hello world'
+                    })
+                },
+                removeItem() {
+                    this.list.splice(this.list.length - 1)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

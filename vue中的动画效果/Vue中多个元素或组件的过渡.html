@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue中多个元素或组件的过渡</title>
+    <script src="../vue.js"></script>
+    <style>
+        .v-enter,
+        .v-leave-to {
+            opacity: 0;
+        }
+
+        .v-enter-active,
+        .v-leave-active {
+            transition: opacity 1s;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <button @click="switchEl">切换多个元素</button>
+        <!-- 过渡模式mode -->
+        <transition mode="out-in">
+            <!-- 当有相同标签名的元素切换时，需要通过 key attribute 设置唯一的值来标记以让 Vue 区分它们，否则 Vue 为了效率只会替换相同标签内部的内容。 -->
+            <div v-if="showEl" key="hello">hello world</div>
+            <div v-else key="bye">bye world</div>
+        </transition>
+
+        <button @click="switchCom">切换多个组件</button>
+        <transition mode="out-in">
+            <!-- 切换多个组件不需要加key -->
+            <child-one v-if="showCom"></child-one>
+            <child-two v-else></child-two>
+        </transition>
+
+        <button @click="switchDynamicCom">切换动态组件</button>
+        <transition mode="out-in">
+            <component :is="type"></component>
+        </transition>
+    </div>
+    <script>
+        Vue.component('child-one', {
+            template: '<div>child-one</div>'
+        })
+        Vue.component('child-two', {
+            template: '<div>child-two</div>'
+        })
+        var vm = new Vue({
+            el: '#root',
+            data: {
+                showEl: true,
+                showCom: true,
+                type: 'child-one'
+            },
+            methods: {
+                switchEl() {
+                    this.showEl = !this.showEl
+                },
+                switchCom() {
+                    this.showCom = !this.showCom
+                },
+                switchDynamicCom() {
+                    this.type = this.type === 'child-one' ? 'child-two' : 'child-one'
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

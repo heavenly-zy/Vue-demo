@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue中同时使用过渡和动画</title>
+    <link rel="stylesheet" href="animate.css">
+    <script src="../vue.js"></script>
+    <style>
+        .fade-enter,
+        .fade-leave-to {
+            opacity: 0;
+        }
+
+        .fade-enter-active,
+        .fade-leave-active {
+            transition: opacity 3s;
+        }
+    </style>
+</head>
+<!-- 设置动画时长的方式：
+1. 使用 type attribute 并设置 animation 或 transition 来明确声明你需要 Vue 监听的类型。
+2. <transition :duration="1000">...</transition>
+3. <transition :duration="{ enter: 500, leave: 800 }">...</transition> 
+-->
+<body>
+    <div id="root">
+        <button @click="handleClick">切换</button>
+        <transition name="fade"
+                    :duration="{ enter: 5000, leave: 1000 }"
+                    enter-active-class="animated swing fade-enter-active"
+                    leave-active-class="animated shake fade-leave-active"
+                    appear-active-class="animated wobble"
+                    appear>
+            <div v-if="show">hello world</div>
+        </transition>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#root',
+            data: {
+                show: true
+            },
+            methods: {
+                handleClick() {
+                    this.show = !this.show
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

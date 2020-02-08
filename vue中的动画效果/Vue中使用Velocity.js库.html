@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue中使用Velocity.js库</title>
+    <script src="../vue.js"></script>
+    <script src="Velocity.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <button @click="handleClick">切换</button>
+        <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+            <div v-show="show">hello world</div>
+        </transition>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#root',
+            data: {
+                show: true
+            },
+            methods: {
+                handleClick() {
+                    this.show = !this.show
+                },
+                beforeEnter(el) {
+                    el.style.opacity = 0
+                },
+                enter(el, done) {
+                    Velocity(el, {
+                        opacity: 1
+                    }, {
+                        duration: 2000,
+                        complete: done
+                    })
+                },
+                afterEnter(el) {
+                    el.style.color = 'yellow'
+                    alert('动画结束后，我变为黄色了')
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

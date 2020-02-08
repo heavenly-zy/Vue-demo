@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue中的动画封装</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <button @click="handleClick">切换</button>
+        <fade :show="show">
+            <div>hello world</div>
+        </fade>
+        <fade :show="show">
+            <h1>hello world</h1>
+        </fade>
+    </div>
+    <script>
+        // 过渡可以通过 Vue 的组件系统实现复用。要创建一个可复用过渡组件，你需要做的就是将 <transition> 或者 <transition-group> 作为根组件，然后将任何子组件放置在其中就可以了。
+        Vue.component('fade', {
+            props: ['show'],
+            template: `
+                <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+                    <slot v-if="show"></slot>
+                </transition>
+            `,
+            methods: {
+                beforeEnter(el) {
+                    el.style.color = 'red'
+                },
+                enter(el, done) {
+                    setTimeout(() => {
+                        el.style.color = 'blue'
+                    }, 2000)
+                    setTimeout(() => {
+                        done()
+                    }, 4000)
+                },
+                afterEnter(el) {
+                    el.style.color = 'yellow'
+                    console.log('动画结束')
+                }
+            }
+        })
+        var vm = new Vue({
+            el: '#root',
+            data: {
+                show: true
+            },
+            methods: {
+                handleClick() {
+                    this.show = !this.show
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
